@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'shop/style.css' %}">
+  <meta charset="UTF-8">
+  <title>Etiket Sistemi</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    .search-box { margin-bottom: 20px; }
+    
+    .etiket-wrapper {
+        display: inline-block;
+        margin: 5px;
+        text-align: center;
+        height: 220px;
+        width: 180px;
+    }
+
+    .kaldir a {
+        color: red;
+        text-decoration: none;
+        font-size: 0.8em;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .etiket {
+        width: 180px;
+        height: 200px;
+        border: 2px solid #000;
+        padding: 8px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: white;
+    }
+
+    .logos {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .brand-logo, .company-logo {
+        max-height: 35px;
+        max-width: 70px;
+    }
+
+    .urun-bilgileri {
+        margin: 0;
+        padding: 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .urun-adi { 
+        font-weight: bold; 
+        font-size: 11px; 
+        margin: 2px 0;
+        line-height: 1.2;
+    }
+
+    .urun-kod { 
+        font-size: 16px; 
+        font-weight: bold;
+        margin: 3px 0;
+    }
+
+    .urun-boyut { 
+        font-size: 12px; 
+        margin: 2px 0;
+    }
+
+    .fiyat-bilgi {
+        margin-top: auto;
+    }
+
+    .fiyat-bilgi .fiyat {
+        color: red;
+        font-weight: bold;
+        font-size: 24px;
+        margin: 5px 0;
+        line-height: 1;
+    }
+
+    .fiyat-bilgi .bilgi {
+        font-size: 8px;
+        line-height: 1.1;
+        margin: 2px 0;
+    }
+
+    .fiyat-bilgi .uretim {
+        font-size: 8px;
+        margin: 1px 0;
+    }
+    
+    .a4 {
+      border: 2px dashed #aaa;
+      width: 794px;  /* A4 genişliği (px olarak 96dpi) */
+      height: 1123px; /* A4 yüksekliği */
+      padding: 20px;
+      overflow: auto; /* Allow scrolling if content exceeds A4 height */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏷️ Etiket Sistemi</h1>
+    </div>
+    
+    <div class="content">
+      <!-- Arama Bölümü -->
+      <div class="search-section">
+        <form method="get" class="search-box">
+          <input type="text" name="q" placeholder="Ürün kodu ara..." value="{{ query }}">
+          <button type="submit" class="btn btn-primary">
+            🔍 Ara
+          </button>
+        </form>
+      </div>
+
+      <!-- Arama Sonuçları -->
+      {% if results %}
+        <div class="results-section">
+          <h3>📋 Arama Sonuçları</h3>
+          <ul class="results-list">
+            {% for product in results %}
+              <li>
+                <span class="product-info">{{ product.code }} - {{ product.price }} ₺</span>
+                <a href="?add={{ product.code }}" class="add-btn">+ Ekle</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <!-- Seçilen Etiketler -->
+      <div class="labels-section">
+        <div class="section-header">
+          <h3>🏷️ Seçilen Etiketler</h3>
+          {% if selected %}
+          <a href="?export_pdf=1" class="pdf-button">
+            📄 PDF İndir
+          </a>
+          {% endif %}
+        </div>
+        
+        <div class="a4">
+          {% for product in selected %}
+            <div class="etiket-wrapper">
+              <div class="etiket">
+                  <!-- Logolar -->
+                  <div class="logos">
+                      <img src="/media/logos/arcelik.png" class="brand-logo" alt="Ürün Markası">
+                      <img src="/media/logos/sirket.png" class="company-logo" alt="Şirket">
+                  </div>
+                  <!-- Ürün Bilgileri -->
+                  <div class="urun-bilgileri">
+                      <div class="urun-adi">BOŞ</div>
+                      <div class="urun-kod">{{ product.code }}</div>
+                      <div class="urun-boyut">BOŞ</div>
+                  </div>
+                  <!-- Fiyat Bilgileri -->
+                  <div class="fiyat-bilgi">
+                      <div class="fiyat">{{ product.price }} ₺</div>
+                      <div class="bilgi">
+                          <small>Fiyatlarımıza KDV dahildir.<br>
+                          {{ today }} tarihinde fiyatlandırılmıştır.</small>
+                      </div>
+                      <div class="uretim">ÜRETİM YERİ: </div>
+                  </div>
+              </div>
+              <div class="kaldir">
+                <a href="?remove={{ product.code }}">❌ Kaldır</a>
+              </div>
+            </div>
+          {% empty %}
+            <div class="empty-state">
+              <i>📄</i>
+              <h4>Henüz etiket eklenmedi</h4>
+              <p>Yukarıdaki arama kutusunu kullanarak ürün arayın ve etiket ekleyin</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

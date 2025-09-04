@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Etiketler PDF</title>
+  <style>
+    body { 
+        font-family: Arial, sans-serif; 
+        margin: 0; 
+        padding: 10mm;
+        background: white;
+    }
+    
+    .container {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+    }
+    
+    .etiket-wrapper {
+        display: inline-block;
+        margin: 2mm;
+        text-align: center;
+        height: 55mm;
+        width: 45mm;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .etiket {
+        width: 45mm;
+        height: 50mm;
+        border: 2px solid #000;
+        padding: 2mm;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: white;
+    }
+
+    .logos {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1mm;
+        padding-bottom: 1mm;
+        border-bottom: 1px solid #000;
+    }
+
+    .brand-logo, .company-logo {
+        max-height: 8mm;
+        max-width: 16mm;
+    }
+
+    .urun-bilgileri {
+        margin: 0;
+        padding: 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .urun-adi { 
+        font-weight: bold; 
+        font-size: 8pt; 
+        margin: 1mm 0;
+        line-height: 1.2;
+    }
+
+    .urun-kod { 
+        font-size: 12pt; 
+        font-weight: bold;
+        margin: 1mm 0;
+    }
+
+    .urun-boyut { 
+        font-size: 9pt; 
+        margin: 1mm 0;
+    }
+
+    .fiyat-bilgi {
+        margin-top: auto;
+    }
+
+    .fiyat-bilgi .fiyat {
+        color: red;
+        font-weight: bold;
+        font-size: 16pt;
+        margin: 1mm 0;
+        line-height: 1;
+    }
+
+    .fiyat-bilgi .bilgi {
+        font-size: 6pt;
+        line-height: 1.1;
+        margin: 0.5mm 0;
+    }
+
+    .fiyat-bilgi .uretim {
+        font-size: 6pt;
+        margin: 0.5mm 0;
+        color: red;
+        font-weight: bold;
+    }
+    
+    /* Print-specific styles */
+    @media print {
+        body {
+            margin: 0;
+            padding: 5mm;
+        }
+        .etiket-wrapper {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+    }
+    
+    /* JavaScript fallback message */
+    .js-print-message {
+        background: #f0f0f0;
+        padding: 10px;
+        margin: 10px 0;
+        border-left: 4px solid #007bff;
+        display: none;
+    }
+  </style>
+</head>
+<body>
+  {% if print_mode %}
+    <div class="js-print-message" id="printMessage">
+      <strong>PDF oluşturulamadı.</strong> Lütfen tarayıcınızın "Yazdır" özelliğini kullanarak PDF olarak kaydedin.
+      <button onclick="window.print()">Yazdır</button>
+    </div>
+    <script>
+      document.getElementById('printMessage').style.display = 'block';
+      // Auto print after a short delay
+      setTimeout(() => window.print(), 1000);
+    </script>
+  {% endif %}
+
+  <div class="container">
+    {% for product in selected %}
+      <div class="etiket-wrapper">
+        <div class="etiket">
+            <!-- Logolar -->
+            <div class="logos">
+                <img src="/media/logos/arcelik.png" class="brand-logo" alt="Ürün Markası">
+                <img src="/media/logos/sirket.png" class="company-logo" alt="Şirket">
+            </div>
+            <!-- Ürün Bilgileri -->
+            <div class="urun-bilgileri">
+                <div class="urun-adi">BOŞ</div>
+                <div class="urun-kod">{{ product.code }}</div>
+                <div class="urun-boyut">BOŞ</div>
+            </div>
+            <!-- Fiyat Bilgileri -->
+            <div class="fiyat-bilgi">
+                <div class="fiyat">{{ product.price }} ₺</div>
+                <div class="bilgi">
+                    <small>Fiyatlarımıza KDV dahildir.<br>
+                    {{ today }} tarihinde fiyatlandırılmıştır.</small>
+                </div>
+                <div class="uretim">ÜRETİM YERİ: </div>
+            </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+</body>
+</html>

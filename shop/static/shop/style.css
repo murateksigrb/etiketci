@@ -1,0 +1,93 @@
+.etiket-wrapper {
+    display: inline-block;
+    margin: 5px;
+    text-align: center;
+    height: 220px;
+    width: 180px;
+}
+
+.kaldir a {
+    color: red;
+    text-decoration: none;
+    font-size: 0.8em;
+    margin-top: 5px;
+    display: block;
+}
+
+.etiket {
+    width: 180px;
+    height: 200px;
+    border: 2px solid #000;
+    padding: 8px;
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.brand-logo, .company-logo {
+    max-height: 35px;
+    max-width: 70px;
+}
+
+.urun-bilgileri {
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.urun-adi { 
+    font-weight: bold; 
+    font-size: 11px; 
+    margin: 2px 0;
+    line-height: 1.2;
+}
+
+.urun-kod { 
+    font-size: 16px; 
+    font-weight: bold;
+    margin: 3px 0;
+}
+
+.urun-boyut { 
+    font-size: 12px; 
+    margin: 2px 0;
+}
+
+.fiyat-bilgi {
+    margin-top: auto;
+}
+
+.fiyat-bilgi .fiyat {
+    color: red;
+    font-weight: bold;
+    font-size: 24px;
+    margin: 5px 0;
+    line-height: 1;
+}
+
+.fiyat-bilgi .bilgi {
+    font-size: 8px;
+    line-height: 1.1;
+    margin: 2px 0;
+}
+
+.fiyat-bilgi .uretim {
+    font-size: 8px;
+    margin: 1px 0;
+}
