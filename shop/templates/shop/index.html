@@ -1,200 +1,758 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-{% load static %}
-<link rel="stylesheet" href="{% static 'shop/style.css' %}">
-  <meta charset="UTF-8">
-  <title>Etiket Sistemi</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { color: #333; }
-    .search-box { margin-bottom: 20px; }
-    
-    .etiket-wrapper {
-        display: inline-block;
-        margin: 5px;
-        text-align: center;
-        height: 220px;
-        width: 180px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etiket Sistemi</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Modern CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .kaldir a {
-        color: red;
-        text-decoration: none;
-        font-size: 0.8em;
-        margin-top: 5px;
-        display: block;
-    }
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
 
-    .etiket {
-        width: 180px;
-        height: 200px;
-        border: 2px solid #000;
-        padding: 8px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin: 0;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: white;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
 
-    .logos {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 5px;
-    }
+        .main-container {
+            min-height: 100vh;
+            padding: 2rem;
+        }
 
-    .brand-logo, .company-logo {
-        max-height: 35px;
-        max-width: 70px;
-    }
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    .urun-bilgileri {
-        margin: 0;
-        padding: 0;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+        /* Header */
+        .header {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
 
-    .urun-adi { 
-        font-weight: bold; 
-        font-size: 11px; 
-        margin: 2px 0;
-        line-height: 1.2;
-    }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
 
-    .urun-kod { 
-        font-size: 16px; 
-        font-weight: bold;
-        margin: 3px 0;
-    }
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
 
-    .urun-boyut { 
-        font-size: 12px; 
-        margin: 2px 0;
-    }
+        /* Search Section */
+        .search-section {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
 
-    .fiyat-bilgi {
-        margin-top: auto;
-    }
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-    .fiyat-bilgi .fiyat {
-        color: red;
-        font-weight: bold;
-        font-size: 24px;
-        margin: 5px 0;
-        line-height: 1;
-    }
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+        }
 
-    .fiyat-bilgi .bilgi {
-        font-size: 8px;
-        line-height: 1.1;
-        margin: 2px 0;
-    }
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: var(--surface);
+        }
 
-    .fiyat-bilgi .uretim {
-        font-size: 8px;
-        margin: 1px 0;
-    }
-    
-    .a4 {
-      border: 2px dashed #aaa;
-      width: 794px;  /* A4 genişliği (px olarak 96dpi) */
-      height: 1123px; /* A4 yüksekliği */
-      padding: 20px;
-      overflow: auto; /* Allow scrolling if content exceeds A4 height */
-    }
-  </style>
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+        }
+
+        .search-clear-btn {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: none;
+        }
+
+        .search-clear-btn:hover {
+            background: var(--border-color);
+            color: var(--danger-color);
+        }
+
+        .search-btn {
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results Section */
+        .results-section {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .results-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .results-count {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .results-list {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .result-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .product-info {
+            font-weight: 500;
+        }
+
+        .add-btn {
+            background: var(--success-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Labels Section */
+        .labels-section {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        }
+
+        .section-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pdf-button {
+            background: var(--danger-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pdf-button:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* A4 Print Area */
+        .a4 {
+            padding: 2rem;
+            min-height: 400px;
+        }
+
+        /* Label Grid */
+        .labels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Modern Label Design */
+        .etiket-wrapper {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .etiket-wrapper:hover {
+            transform: translateY(-4px);
+        }
+
+        .etiket {
+            width: 200px;
+            height: 240px;
+            background: linear-gradient(145deg, #ffffff, #f5f7fa);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .etiket::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #8b5cf6, var(--primary-color));
+        }
+
+        .etiket:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .logos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .brand-logo, .company-logo {
+            max-height: 40px;
+            max-width: 80px;
+            border-radius: 4px;
+        }
+
+        .urun-bilgileri {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .urun-adi {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.2;
+        }
+
+        .urun-kod {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .urun-boyut {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .fiyat-bilgi {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .fiyat {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--danger-color);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+        }
+
+        .bilgi {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .uretim {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Remove button */
+        .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 32px;
+            height: 32px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-md);
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .etiket-wrapper:hover .remove-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .labels-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1rem;
+            }
+
+            .etiket {
+                width: 100%;
+                min-width: 180px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white !important;
+            }
+            
+            .main-container {
+                padding: 0;
+            }
+            
+            .header, .search-section, .results-section, .section-header {
+                display: none !important;
+            }
+            
+            .labels-section {
+                box-shadow: none;
+            }
+            
+            .a4 {
+                padding: 0;
+            }
+            
+            .labels-grid {
+                display: block;
+            }
+            
+            .etiket-wrapper {
+                display: inline-block;
+                margin: 5px;
+                page-break-inside: avoid;
+            }
+            
+            .remove-btn {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🏷️ Etiket Sistemi</h1>
-    </div>
-    
-    <div class="content">
-      <!-- Arama Bölümü -->
-      <div class="search-section">
-        <form method="get" class="search-box">
-          <input type="text" name="q" placeholder="Ürün kodu ara..." value="{{ query }}">
-          <button type="submit" class="btn btn-primary">
-            🔍 Ara
-          </button>
-        </form>
-      </div>
-
-      <!-- Arama Sonuçları -->
-      {% if results %}
-        <div class="results-section">
-          <h3>📋 Arama Sonuçları</h3>
-          <ul class="results-list">
-            {% for product in results %}
-              <li>
-                <span class="product-info">{{ product.code }} - {{ product.price }} ₺</span>
-                <a href="?add={{ product.code }}" class="add-btn">+ Ekle</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-
-      <!-- Seçilen Etiketler -->
-      <div class="labels-section">
-        <div class="section-header">
-          <h3>🏷️ Seçilen Etiketler</h3>
-          {% if selected %}
-          <a href="?export_pdf=1" class="pdf-button">
-            📄 PDF İndir
-          </a>
-          {% endif %}
-        </div>
-        
-        <div class="a4">
-          {% for product in selected %}
-            <div class="etiket-wrapper">
-              <div class="etiket">
-                  <!-- Logolar -->
-                  <div class="logos">
-                      <img src="/media/logos/arcelik.png" class="brand-logo" alt="Ürün Markası">
-                      <img src="/media/logos/sirket.png" class="company-logo" alt="Şirket">
-                  </div>
-                  <!-- Ürün Bilgileri -->
-                  <div class="urun-bilgileri">
-                      <div class="urun-adi">BOŞ</div>
-                      <div class="urun-kod">{{ product.code }}</div>
-                      <div class="urun-boyut">BOŞ</div>
-                  </div>
-                  <!-- Fiyat Bilgileri -->
-                  <div class="fiyat-bilgi">
-                      <div class="fiyat">{{ product.price }} ₺</div>
-                      <div class="bilgi">
-                          <small>Fiyatlarımıza KDV dahildir.<br>
-                          {{ today }} tarihinde fiyatlandırılmıştır.</small>
-                      </div>
-                      <div class="uretim">ÜRETİM YERİ: </div>
-                  </div>
-              </div>
-              <div class="kaldir">
-                <a href="?remove={{ product.code }}">❌ Kaldır</a>
-              </div>
+    <div class="main-container">
+        <div class="content-wrapper">
+            <!-- Header -->
+            <div class="header">
+                <h1><i class="fas fa-tags"></i> Etiket Sistemi</h1>
             </div>
-          {% empty %}
-            <div class="empty-state">
-              <i>📄</i>
-              <h4>Henüz etiket eklenmedi</h4>
-              <p>Yukarıdaki arama kutusunu kullanarak ürün arayın ve etiket ekleyin</p>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <form method="get" class="search-form">
+                    <div class="search-input-wrapper">
+                        <input 
+                            type="text" 
+                            name="q" 
+                            class="search-input"
+                            placeholder="Ürün kodu ara..." 
+                            value="{{ query }}"
+                            autocomplete="off"
+                        >
+                        <button type="button" class="search-clear-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                        Ara
+                    </button>
+                </form>
             </div>
-          {% endfor %}
+
+            <!-- Search Results -->
+            {% if results %}
+            <div class="results-section">
+                <div class="results-header">
+                    <h3><i class="fas fa-list"></i> Arama Sonuçları</h3>
+                    <span class="results-count">{{ results|length }}</span>
+                </div>
+                <ul class="results-list">
+                    {% for product in results %}
+                    <li class="result-item">
+                        <span class="product-info">
+                            <strong>{{ product.code }}</strong> - {{ product.price }} ₺
+                        </span>
+                        <a href="?add={{ product.code }}" class="add-btn">
+                            <i class="fas fa-plus"></i>
+                            Ekle
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- Selected Labels -->
+            <div class="labels-section">
+                <div class="section-header">
+                    <h3>
+                        <i class="fas fa-tags"></i> 
+                        Seçilen Etiketler
+                        {% if selected %}
+                        <span class="results-count">{{ selected|length }}</span>
+                        {% endif %}
+                    </h3>
+                    {% if selected %}
+                    <a href="?export_pdf=1" class="pdf-button">
+                        <i class="fas fa-file-pdf"></i>
+                        PDF İndir
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="a4">
+                    {% if selected %}
+                    <div class="labels-grid">
+                        {% for product in selected %}
+                        <div class="etiket-wrapper">
+                            <div class="etiket">
+                                <!-- Logolar -->
+                                <div class="logos">
+                                    <img src="/media/logos/arcelik.png" class="brand-logo" alt="Ürün Markası">
+                                    <img src="/media/logos/sirket.png" class="company-logo" alt="Şirket">
+                                </div>
+                                
+                                <!-- Ürün Bilgileri -->
+                                <div class="urun-bilgileri">
+                                    <div class="urun-adi">{{ product.name|default:"BOŞ" }}</div>
+                                    <div class="urun-kod">{{ product.code }}</div>
+                                    <div class="urun-boyut">{{ product.size|default:"BOŞ" }}</div>
+                                </div>
+                                
+                                <!-- Fiyat Bilgileri -->
+                                <div class="fiyat-bilgi">
+                                    <div class="fiyat">{{ product.price }} ₺</div>
+                                    <div class="bilgi">
+                                        Fiyatlarımıza KDV dahildir.<br>
+                                        {{ today }} tarihinde fiyatlandırılmıştır.
+                                    </div>
+                                    <div class="uretim">ÜRETİM YERİ: {{ product.origin|default:"" }}</div>
+                                </div>
+                            </div>
+                            
+                            <button class="remove-btn" onclick="window.location.href='?remove={{ product.code }}'">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h4>Henüz etiket eklenmedi</h4>
+                        <p>Yukarıdaki arama kutusunu kullanarak ürün arayın ve etiket ekleyin</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  
+
+    <script>
+        // Enhanced Label System JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            const searchForm = document.querySelector('.search-form');
+            const searchInput = document.querySelector('.search-input');
+            const searchButton = document.querySelector('.search-btn');
+            const clearButton = document.querySelector('.search-clear-btn');
+
+            // Show/hide clear button
+            function toggleClearButton() {
+                if (searchInput.value.trim()) {
+                    clearButton.style.display = 'block';
+                } else {
+                    clearButton.style.display = 'none';
+                }
+            }
+
+            // Initial state
+            toggleClearButton();
+
+            // Input event listener
+            searchInput.addEventListener('input', toggleClearButton);
+
+            // Clear button functionality
+            clearButton.addEventListener('click', function() {
+                searchInput.value = '';
+                toggleClearButton();
+                searchInput.focus();
+                
+                // If there are current results, clear them
+                const currentUrl = new URL(window.location);
+                if (currentUrl.searchParams.has('q')) {
+                    window.location.href = currentUrl.pathname;
+                }
+            });
+
+            // Loading state for search button
+            searchForm.addEventListener('submit', function() {
+                if (searchInput.value.trim()) {
+                    searchButton.disabled = true;
+                    searchButton.innerHTML = '<div class="spinner"></div> Aranıyor...';
+                }
+            });
+
+            // Auto-focus search input
+            searchInput.focus();
+
+            // Add loading states to action buttons
+            document.querySelectorAll('.add-btn, .pdf-button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Don't add loading state for PDF button
+                    if (this.classList.contains('pdf-button')) return;
+                    
+                    this.style.opacity = '0.7';
+                    this.style.pointerEvents = 'none';
+                    
+                    const originalContent = this.innerHTML;
+                    this.innerHTML = '<div class="spinner" style="width: 12px; height: 12px; border-width: 1px;"></div>';
+                    
+                    // Re-enable after 2 seconds (in case of slow response)
+                    setTimeout(() => {
+                        this.style.opacity = '1';
+                        this.style.pointerEvents = 'auto';
+                        this.innerHTML = originalContent;
+                    }, 2000);
+                });
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + K to focus search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    searchInput.focus();
+                    searchInput.select();
+                }
+                
+                // Escape to clear search
+                if (e.key === 'Escape') {
+                    if (document.activeElement === searchInput) {
+                        searchInput.value = '';
+                        toggleClearButton();
+                    }
+                }
+            });
+
+            // Smooth scroll animations for dynamic content
+            if (window.location.search.includes('add=') || window.location.search.includes('remove=')) {
+                setTimeout(() => {
+                    document.querySelector('.labels-section').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 100);
+            }
+        });
+    </script>
 </body>
 </html>
