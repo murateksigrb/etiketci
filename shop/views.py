@@ -17,7 +17,7 @@ PRODUCTS = [
     {"code": "222LGS", "brand": "Electrolux", "price": 3299},
     {"code": "234AYT", "brand": "Kuhn Rikon", "price": 2599},
     {"code": "345AYC", "brand": "samsung", "price": 1599},
-    {"code": "456TYT", "brand": "siemens", "price": 599},
+    {"code": "456TYT", "brand": "Kuhn Rikon", "price": 599},
     {"code": "567AGZ", "brand": "Ankarsrum", "price": 4599},
 ]
 
