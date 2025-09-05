@@ -7,12 +7,18 @@ import os
 
 # Create your views here.
 PRODUCTS = [
-    {"code": "ABC123", "brand": "arcelik", "price": 1499},
-    {"code": "XYZ456", "brand": "beko", "price": 3299},
-    {"code": "DEF789", "brand": "bosch", "price": 2599},
-    {"code": "GHI101", "brand": "samsung", "price": 1599},
-    {"code": "JKL121", "brand": "siemens", "price": 1599},
-    {"code": "MNO131", "brand": "ankarsrum", "price": 1599},
+    {"code": "ABC123", "brand": "Zwilling", "price": 1499},
+    {"code": "XYZ456", "brand": "Beko", "price": 3299},
+    {"code": "DEF789", "brand": "BergHOFF", "price": 2599},
+    {"code": "GHI101", "brand": "Laurastar", "price": 1599},
+    {"code": "JKL121", "brand": "Philips", "price": 599},
+    {"code": "MNO131", "brand": "Ankarsrum", "price": 4599},
+    {"code": "188DRG", "brand": "Fritel", "price": 1499},
+    {"code": "222LGS", "brand": "Electrolux", "price": 3299},
+    {"code": "234AYT", "brand": "Kuhn Rikon", "price": 2599},
+    {"code": "345AYC", "brand": "samsung", "price": 1599},
+    {"code": "456TYT", "brand": "siemens", "price": 599},
+    {"code": "567AGZ", "brand": "Ankarsrum", "price": 4599},
 ]
 
 
